@@ -1,4 +1,4 @@
-<nav class = "navbar navbar-expand-lg navbar-custom">
+<nav class = "navbar fixed-top navbar-expand-lg navbar-custom">
     <div class = "container-fluid">
         <a class = "navbar-brand" href="">
             <img src="storage/app/logo.svg" alt="" width = "30">
@@ -8,13 +8,14 @@
         </button>
         <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
             <a href="{{ url('home') }}" class = "nav-link active">Home</a>
-            <a href="{{ url('curriculum') }}" class = "nav-link">Syllabus Viewer</a>
+            <a href="{{ url('curriculum') }}" class = "nav-link">Curriculum Viewer</a>
             <a href="{{ url('marksheet') }}" class = "nav-link">Marksheet Manager</a>
             <a href="{{ url('scores') }}" class = "nav-link">Score Tracker</a></li>
             <a href="{{ url('curriculum') }}" class = "nav-link">Enrollment Studies</a></li>
         </div>
     </div>
 </nav>
+<br>
 
 {{-- <nav>
     <input type="checkbox" id= "check">

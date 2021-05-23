@@ -5,7 +5,7 @@
 <div class = "m-auto w-4/5 py-24">
     <div class = "text-center">
         <h1 class = "text-5xl uppercase bold">
-            Course Semester Plan
+            Course Planner
         </h1>
     </div>
 </div>
@@ -168,8 +168,8 @@
 </div>
 <br>
 <div class = "jumbotron" style = "margin: 20px;">
-    <legend>Student Marks Entry</legend>
     <form id = "course-section-form" action = "" autocomplete = "off">
+        <legend>Student Marks Entry</legend>
         <br>
         <div class = "row d-flex justify-content-center">
             {{-- ENABLER: Form Subset 1.0: Course-Section Entry --}}
@@ -187,58 +187,64 @@
             </div>
         </div>
     </form>
-    <legend>Assessment Entry</legend>
-            <br>
-            <div class = "mb-3" style = "justify-content-center; ">
-                <label for="courseList" class="form-label">Section</label>
-                <select class="form-select form-select-md" id = "section-selection" aria-label=".form-select-sm example" id = "section-selection" disabled = "true">
-                    <option selected>Select</option>
-                    @for($i = 0; $i < 6; $i++)
-                        <option>{{ $i }}
-                    @endfor
-                </select>
+    <form action="">
+    <legend>Marks Entry</legend>
+        <br>
+        <div class = "mb-3" style = "justify-content-center; ">
+            <label for="courseList" class="form-label">Section</label>
+            <select class="form-select form-select-md" id = "section-selection" aria-label=".form-select-sm example" id = "section-selection" disabled = "true">
+                <option selected>Select</option>
+                @for($i = 0; $i < 6; $i++)
+                    <option>{{ $i }}
+                @endfor
+            </select>
+        </div>
+        {{-- Form Subset 0.2: Exam Type Entry --}}
+        <div class = "mb-3">
+            <label for="courseList" class="form-label">Assessment Type</label>
+            <select class="form-select form-select-md" id = "assessment--selection" aria-label=".form-select-lg example" disabled = "true">
+                <option selected>Choose</option>
+                <option value="1">Quiz</option>
+                <option value="2">Mid</option>
+                <option value="3">Final</option>
+                <option value="3">Project</option>
+            </select>
+        </div>
+        {{-- Form Subset 0.3: Total Questions Entry --}}
+        <div class="mb-3">
+            <label for="total_questions" class="form-label">Total Questions</label>
+            <input type="text" class="form-control" id="total_questions-selection" aria-describedby="marks_footnote" disabled = "true">
+            <div id="marks_footnote" class="form-text">
+                This field must be a positive whole number for valid consideration. 
             </div>
-            {{-- Form Subset 0.2: Exam Type Entry --}}
-            <div class = "mb-3">
-                <label for="courseList" class="form-label">Assessment Type</label>
-                <select class="form-select form-select-md" id = "assessment--selection" aria-label=".form-select-lg example" disabled = "true">
-                    <option selected>Choose</option>
-                    <option value="1">Quiz</option>
-                    <option value="2">Mid</option>
-                    <option value="3">Final</option>
-                    <option value="3">Project</option>
-                </select>
+        </div>
+        {{-- Form Subset 0.4: Total Marks Entry --}}
+        <div class="mb-3">
+            <label for="total_marks" class="form-label">Total Marks</label>
+            <input type="text" class="form-control" id="total-marks-selection" aria-describedby="marks_footnote" disabled = "true">
+            <div id="marks_footnote" class="form-text">
+                The total score must be a whole number for grade calculation procedures. 
             </div>
-            {{-- Form Subset 0.3: Total Questions Entry --}}
-            <div class="mb-3">
-                <label for="total_questions" class="form-label">Total Questions</label>
-                <input type="text" class="form-control" id="total_questions-selection" aria-describedby="marks_footnote" disabled = "true">
-                <div id="marks_footnote" class="form-text">
-                    This field must be a positive whole number for valid consideration. 
-                </div>
-            </div>
-            {{-- Form Subset 0.4: Total Marks Entry --}}
-            <div class="mb-3">
-                <label for="total_marks" class="form-label">Total Marks</label>
-                <input type="text" class="form-control" id="total-marks-selection" aria-describedby="marks_footnote" disabled = "true">
-                <div id="marks_footnote" class="form-text">
-                    The total score must be a whole number for grade calculation procedures. 
-                </div>
-            </div>
-            <br>
-            {{-- Form Subset 0.5: Check Submission Toggle --}}
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Show Entry After Submission</label>
-            </div>
-            {{-- Form Subset 0.5: Submission Button --}}
-            <button type="submit" class="btn btn-primary text-center">Submit</button>
-        </form>
+        </div>
+        <br>
+        {{-- Form Subset 0.5: Check Submission Toggle --}}
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Show Entry After Submission</label>
+        </div>
+        {{-- Form Subset 0.5: Submission Button --}}
+        <button type="submit" class="btn btn-primary text-center">Submit</button>
+    </form>
 </div>
-
 <br>
 <br>
 <script type = "text/javascript">
+    
+    // document.getElementById('selected-course').addEventListener('change', event(function){
+
+
+    // });
+
     document.getElementById("course-form").addEventListener("submit", function(event){
         event.preventDefault();
         
@@ -312,46 +318,46 @@
     //         selection = 1; 
     //     });
         
-    //     $('#num-of-questions-selection').on('change', function() {
-    //         value = $(this).val();
-    //         selection = 2; 
-    //     });
+        $('#num-of-questions-selection').on('change', function() {
+            value = $(this).val();
+            selection = 2; 
+        });
 
-    //     $('#section-selection').on('change', function() {
-    //         value = $(this).val();
-    //         selection = 3; 
-    //     });
+        $('#section-selection').on('change', function() {
+            value = $(this).val();
+            selection = 3; 
+        });
 
-    //     $.ajax({
-    //       url: "{{ url('/marksheet') }}",
-    //       data: {
-    //         value: value,
-    //         selection: selection,
-    //       },
-    //       type: "POST",
-    //       dataType: 'json',
+        $.ajax({
+          url: "{{ url('/marksheet') }}",
+          data: {
+            value: value,
+            selection: selection,
+          },
+          type: "POST",
+          dataType: 'json',
           
-    //       success: function (response)
-    //       {
-    //         console.log(response);
-    //         if(response) 
-    //         {
-    //             console.log('Access this course section!')
-    //         }
-    //       },
-    //       error: function(response) 
-    //       {
-    //         console.log("Error" + response);
-    //       }
-    //     });
-    // });
+          success: function (response)
+          {
+            console.log(response);
+            if(response) 
+            {
+                console.log('Access this course section!')
+            }
+          },
+          error: function(response) 
+          {
+            console.log("Error" + response);
+          }
+        });
+    });
 
-    // $('#assessment-form').submit(function(e) {
+    $('#assessment-form').submit(function(e) {
 
-    // });
+    });
 
-    // $('#question-form').submit(function(e) {
+    $('#question-form').submit(function(e) {
 
-    // });
+    });
 </script>
 @stop

@@ -49,7 +49,7 @@ class UniversityController extends Controller
 
         return response()->json([$coutcomes, $course_title]);
 
-         // $coutcomes = DB::table('coutcomes')
+        // $coutcomes = DB::table('coutcomes')
         //     ->joinRaw('floor(coutcome.coutcomeID / 10) = syllabus.syllabusID')
         //     ->join()
         

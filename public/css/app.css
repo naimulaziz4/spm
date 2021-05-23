@@ -10953,3 +10953,9 @@ table {
 .btn-group {
   justify-content: center;
 }
+
+.btn-score {
+  background-color: #58d9f0;
+  font-weight: bold;
+  border: 1px;
+}

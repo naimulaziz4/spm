@@ -4,7 +4,7 @@
         @include('includes.head')
     </head>
     <body>
-        <header class = "row">
+        <header class = "row" style = "margin-bottom: 70px;">
             @include('includes.header')
         </header>
         <div class = "container">
