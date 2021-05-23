@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;1,100;1,200&display=swap');
+
+$interest: black; 
+$shade1: rgb(129, 240, 240);
+$shade2: rgba(88, 217, 240, 0.673);
+$shade4: rgb(20, 174, 174);
+$shade3: black;
+$highlight: rgba(255, 255, 255, 0.666);
+
+html {
+    background-color: rgba(255, 255, 255, 0); 
+}
+
+body {
+    margin: 0px;
+    padding: 0px; 
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0)
+}
+
+.navbar-brand:hover {
+    color: black;
+}
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: black; 
+}
+
+.myCard {
+    margin-top: 50px; 
+    padding: 15px 20px 10px 20px;
+    background-color: $shade1;
+    border-radius: 12px;
+}
+
+.jumbotron {
+    margin-top: 50px; 
+    padding: 15px 20px 10px 20px;
+    background-color: $shade1;
+    border-radius: 12px; 
+}
+
+.btn-info {
+    width: 200px;
+    margin-left: 5px; 
+    margin-right: 5px; 
+}
+
+.course-entry {
+    width: 450px; 
+}
+.course-generator {
+    background-color: $shade2;
+}
+
+.course-generator:hover {
+    background-color: $highlight; 
+    color: $shade3; 
+}
+
+.outcomes-list {
+    color: black;
+}
+
+.outcomes-list:hover {
+    background-color: white; 
+    color: $shade3;
+}
+
+.outcome-view {
+    align-items: center;
+}
+
+.btn-group {
+    justify-content: center; 
+}

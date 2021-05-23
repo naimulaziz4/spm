@@ -1,0 +1,137 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;1,100;1,200&display=swap');
+
+$interest: black; 
+$shade1: rgba(129, 240, 240);
+$shade2: rgb(88, 217, 240);
+$shade3: rgb(20, 174, 174);
+$shade4: rgb(166, 238, 238);
+$highlight: rgb(255, 255, 255);
+
+body {
+    background-color: rgb(234, 250, 249);
+}
+.navbar-brand {
+    color: black; 
+}
+
+.offcanvas {
+    width: 500px;
+}
+
+caption {
+    font-size: 16px;
+    color: black;
+    margin: 7px;
+}
+
+.navbar-brand:hover {
+    color: white; 
+    font-weight: bold; 
+}
+
+.navbar-custom {
+    background-color: $shade1; 
+}
+
+.navbar-toggler:focus, 
+.navbar-toggler:active, 
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    background-color: $highlight;
+    color: $shade2; 
+    font-weight: bold; 
+}
+
+.jumbotron {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 50px; 
+    padding: 15px 20px 10px 20px;
+    background-color: $shade1;
+    border-radius: 12px; 
+}
+
+form {
+    margin: 10px; 
+}
+
+.card {
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    padding: 15px 20px 10px 20px;
+    background-color: $shade4;
+    border-radius: 12px;
+}
+
+.accordion-button {
+    background-color: $shade1; 
+}
+
+.accordion-button:focus {
+    background-color: $shade1; 
+}
+
+.accordion-body {
+    background-color: rgb(205, 238, 238); 
+}
+
+table {
+    border-radius: 5px; 
+}
+
+.table-title {
+    margin-top: 8px; 
+    margin-bottom: 8px; 
+    margin-left: 4px; 
+    font-family: Helvetica; 
+    font-size: 21px;
+}
+
+.btn-info {
+    width: 200px;
+    margin-left: 5px; 
+    margin-right: 5px; 
+}
+
+.course-generator {
+    background-color: $shade2;
+}
+
+.course-generator:hover {
+    background-color: $highlight; 
+    color: $shade3; 
+}
+
+.outcomes-list {
+    color: black;
+}
+
+.outcomes-list:hover {
+    background-color: white; 
+    color: $shade3;
+}
+
+.outcome-view {
+    align-items: center;
+}
+
+.btn-group {
+    justify-content: center; 
+}
