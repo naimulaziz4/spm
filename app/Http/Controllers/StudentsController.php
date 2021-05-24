@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Reponse;
+use Response;
 use App\Models\Test;
 
 class StudentsController extends Controller
@@ -14,31 +14,18 @@ class StudentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {   
-        $sections = DB::table('section')->select('sectionID', 'num_of_exams', 'enrolled')->get();
-
-        return view('pages.marksheet')->with(compact($sections));
-    }
-
-    public function form()
-    {
-        return view('pages.marksheet'); 
-    }
-
-    public function feed(Request $request)
-    {
-        return response()->json('Error');
-    }
 
     public function retrieve()
     {
+        $scores = DB::table('score')->select('studentID', 'marks_attained')->get(); 
+        $assessments = DB::table('assessment')->select('assessmentID', 'exam_type')->distinct()->get();
+
+        return view('pages.scores')->with(compact('scores', 'assessments'));
+
         // $courseID = "CSE303";
         // $studentID = 1414732;
         // $questionID = 1; 
         // $assessmentID = 4;
-        $sectionID = "CSE303.1";
-        $courseID = substr($sectionID, 0, 6); 
 
         // $courses = DB::table('coutcome')
         //     ->where('coutcome.coutcomeID', '111')
@@ -60,11 +47,50 @@ class StudentsController extends Controller
         // dd($coutcomes);
         // $coutcome = DB::table('coutcome')->whereRaw('coutcomeID % 10 = syllabus.syllabusID')->where('syllabus.courseID', $courseID)->select('coutcomeID')->get();
         // $question = DB::table('question')->all();
+        
+    }
+    
+    public function feed(Request $request)
+    {
+        $student = $request->student; 
+        $exam_type = $request->assessment; 
+        
+        if($request->indicator)
+        {
+            $dataset = DB::select(
+                DB::raw("SELECT exam_type, SC.questionID % 10 AS question_num, 
+                ROUND(marks_attained / marks_attainable * 100, 2) AS score_percentage 
+                FROM score AS SC, question AS Q, assessment AS A 
+                WHERE SC.questionID = Q.questionID AND FLOOR(Q.questionID / 10) = A.assessmentID AND studentID = '$student'
+                GROUP BY exam_type, SC.questionID;"));
+        }
+        else
+            $dataset = DB::select(DB::raw("SELECT questionID, marks_attained from score as SC, assessment as A 
+            where floor(SC.questionID / 10) = A.assessmentID and exam_type = '$exam_type' and studentID = '$student'"));
+        
+        // $dataset = DB::table('score')->where('studentID', $student)->select('questionID', 'marks_attained')->get(); 
+        //->max('marks_attainable'); 
+
+        $maximum = DB::select(DB::raw("SELECT MAX(marks_attainable) as maximum from question as Q, assessment as A where A.assessmentID = floor(Q.questionID / 10) and exam_type = '$exam_type'"));
+        // $maximum = DB::table('question')
+        //     ->join('assessment', DB::raw("floor(question.questionID / 10")), '=', 'assessmentID')
+        //     ->where('exam_type', $exam_type)
+        //     ->max('marks_attainable');
+        return response()->json([$dataset, $maximum]);
+    }
+
+    public function index()
+    {   
         $course = DB::table('course')->select('courseID', 'course_title')->get();
-        $section = DB::table('section')->select('sectionID')->get();
-        $exam_type = DB::table('assessment')->where('sectionID', $sectionID)->select('assessmentID', 'exam_type')->distinct()->get();
+        $section = DB::table('section')->select('sectionID', 'num_of_exams', 'enrolled')->get();
+        $exam_type = DB::table('assessment')->select('assessmentID', 'exam_type')->distinct()->get();
         
         return view('pages.marksheet')->with(compact('course', 'section', 'exam_type'));
+    }
+
+    public function form()
+    {
+        return view('pages.marksheet'); 
     }
 
     /**

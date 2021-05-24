@@ -158,7 +158,7 @@
                 <div class="mb-3 form-check">
                     <br>
                     <input type="checkbox" class="form-check-input" id="question-form-check">
-                    <label class="form-check-label" for="question-form-check">Check me out</label>
+                    <label class="form-check-label" for="question-form-check">Show entry after submission</label>
                 </div>
                 {{-- Form Subset 3 --}}
             </div>
@@ -269,6 +269,12 @@
             alert('this works!');
         else
             alert('this does not work!');
+        
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
 
         $.ajax({
             url: "{{ url('/marksheet') }}",
@@ -280,11 +286,11 @@
 
             success: function(response)
             {
-
+                console.log('this works!');
             },
             error: function(response)
             {
-
+                console.log('this doesnt work!');
             }
         });
     });
@@ -318,39 +324,39 @@
     //         selection = 1; 
     //     });
         
-        $('#num-of-questions-selection').on('change', function() {
-            value = $(this).val();
-            selection = 2; 
-        });
+    //     $('#num-of-questions-selection').on('change', function() {
+    //         value = $(this).val();
+    //         selection = 2; 
+    //     });
 
-        $('#section-selection').on('change', function() {
-            value = $(this).val();
-            selection = 3; 
-        });
+    //     $('#section-selection').on('change', function() {
+    //         value = $(this).val();
+    //         selection = 3; 
+    //     });
 
-        $.ajax({
-          url: "{{ url('/marksheet') }}",
-          data: {
-            value: value,
-            selection: selection,
-          },
-          type: "POST",
-          dataType: 'json',
+    //     $.ajax({
+    //       url: "{{ url('/marksheet') }}",
+    //       data: {
+    //         value: value,
+    //         selection: selection,
+    //       },
+    //       type: "POST",
+    //       dataType: 'json',
           
-          success: function (response)
-          {
-            console.log(response);
-            if(response) 
-            {
-                console.log('Access this course section!')
-            }
-          },
-          error: function(response) 
-          {
-            console.log("Error" + response);
-          }
-        });
-    });
+    //       success: function (response)
+    //       {
+    //         console.log(response);
+    //         if(response) 
+    //         {
+    //             console.log('Access this course section!')
+    //         }
+    //       },
+    //       error: function(response) 
+    //       {
+    //         console.log("Error" + response);
+    //       }
+    //     });
+    // });
 
     $('#assessment-form').submit(function(e) {
 

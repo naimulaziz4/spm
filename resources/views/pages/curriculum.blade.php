@@ -8,7 +8,7 @@
         <br>
         <h3 class="display-6" id = "syllabus-heading">Syllabus Viewer</h3>
         <p class="lead">Welcome to the Syllabus Viewer.</p>
-        <p id = "syllabus-content"> 
+        <p id = "syllabus-content">
         <br>
         This feature allow users to input either a course ID or a title.
         <br>
@@ -273,7 +273,7 @@
             if(response) 
             {
                 document.getElementById((search == 0 ? 'secondary-': '') + 'course-footnote').innerHTML = '';
-                document.getElementById('syllabus-heading').prepend(program + ' ');
+                document.getElementById('syllabus-heading').innerHTML = program + ' Syllabus Viewer';
                 document.getElementById('objective-title').innerHTML = program + ' PLO - PEO Mapping';
                 document.getElementById('outcome-title').innerHTML = course + ' PLO – CO Mapping';
                 document.getElementById('coutcome-title').innerHTML = course + ': ' + response[1];

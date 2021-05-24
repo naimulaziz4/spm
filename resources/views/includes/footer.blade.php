@@ -55,16 +55,19 @@
               Modules
             </h6>
             <p>
-              <a href="#!" class="text-reset">Syllabus Viewer</a>
+              <a href="{{ url('/curriculum') }}" class="text-reset">Curriculum Viewer</a>
             </p>
             <p>
-              <a href="#!" class="text-reset">Marksheet Manager</a>
+              <a href="{{ url('/marksheet') }}" class="text-reset">Course Planner</a>
             </p>
             <p>
-              <a href="#!" class="text-reset">Achievement Tracker</a>
+              <a href="{{ url('scores') }}" class="text-reset">Score Tracker</a>
             </p>
             <p>
-              <a href="#!" class="text-reset">Enrollment Studies</a>
+              <a href="{{  url('performance')  }}" class="text-reset">Performance Metrics</a>
+            </p>
+            <p>
+              <a href="{{ url('curriculum') }}" class="text-reset">Enrollment Trends</a>
             </p>
           </div>
           <!-- Grid column -->

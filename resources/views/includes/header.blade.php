@@ -9,9 +9,10 @@
         <div class = "collapse navbar-collapse" id = "navbarSupportedContent">
             <a href="{{ url('home') }}" class = "nav-link active">Home</a>
             <a href="{{ url('curriculum') }}" class = "nav-link">Curriculum Viewer</a>
-            <a href="{{ url('marksheet') }}" class = "nav-link">Marksheet Manager</a>
+            <a href="{{ url('marksheet') }}" class = "nav-link">Course Planner</a>
             <a href="{{ url('scores') }}" class = "nav-link">Score Tracker</a></li>
-            <a href="{{ url('curriculum') }}" class = "nav-link">Enrollment Studies</a></li>
+            <a href="{{ url('performance') }}" class = "nav-link">Performance Metrics</a></li>
+            <a href="{{ url('curriculum') }}" class = "nav-link">Enrollment Trends</a></li>
         </div>
     </div>
 </nav>

@@ -1,0 +1,92 @@
+<script>
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myBar = new Chart(ctx, {
+        type: 'line', 
+            options: {
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }, 
+                scales: {
+                    xAxes: [{
+                        display: true, 
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 2, 
+                            maxRotation: 0, 
+                            minRotation: 0
+                        }, 
+                        gridLines = {
+                            display: false
+                        }
+                    }], 
+                    yAxes: [{
+                        ticks: {
+                            suggestedmax: 13000, 
+                            suggestedmin: 13000
+                        }, 
+                        display: true, 
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }, 
+                legend: {
+                    display: legendState
+                }
+            }, 
+            data: {
+                labels: assessments, //response[1] retrieve assessments
+                datasets: 
+                [
+                    {
+                        label: "Outcome Achievement",
+                        fill: true, 
+                        lineTension: 0.2, 
+                        backgroundColor: 'rgb(129, 240, 240)', 
+                        borderColor: 'rgb(129, 240, 240)', 
+                        pointBorderColor: 'rgb(129, 240, 240', 
+                        pointHoverBackgroundColor: black, 
+                        borderCapStyle: 'butt', 
+                        borderDash: [], 
+                        borderDashOffset: 0.0, 
+                        borderJoinStyle: 'miter', 
+                        borderWidth: 2, 
+                        pointBackgroundColor: "#fff", 
+                        pointBorderwidth: 0, 
+                        pointHoverRadius: 3, 
+                        pointHoverBorderColor: '#fff', 
+                        pointHoverBorderWidth: 3, 
+                        pointRadius: 0, 
+                        pointHitRadius: 0, 
+                        data: scores, 
+                        spanGaps: false
+                    },
+                    {
+                        label: "Outcome Achievement",
+                        fill: true, 
+                        lineTension: 0.2, 
+                        backgroundColor: 'rgb(129, 240, 240)', 
+                        borderColor: 'rgb(129, 240, 240)', 
+                        pointBorderColor: 'rgb(129, 240, 240', 
+                        pointHoverBackgroundColor: black, 
+                        borderCapStyle: 'butt', 
+                        borderDash: [], 
+                        borderDashOffset: 0.0, 
+                        borderJoinStyle: 'miter', 
+                        borderWidth: 2, 
+                        pointBackgroundColor: "#fff", 
+                        pointBorderwidth: 0, 
+                        pointHoverRadius: 3, 
+                        pointHoverBorderColor: '#fff', 
+                        pointHoverBorderWidth: 3, 
+                        pointRadius: 0, 
+                        pointHitRadius: 0, 
+                        data: scores, 
+                        spanGaps: false
+                    }
+                ]
+            }
+        }); 
+</script>
