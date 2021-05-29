@@ -239,13 +239,11 @@
 <br>
 <br>
 <script type = "text/javascript">
-    
-    // document.getElementById('selected-course').addEventListener('change', event(function){
+    document.getElementById('selected-course').onchange = event => {
+        // event.preventDefault();
+    }
 
-
-    // });
-
-    document.getElementById("course-form").addEventListener("submit", function(event){
+    document.getElementById("course-form").onsubmit = event => {
         event.preventDefault();
         
         var selected_course = document.getElementById('selected-course').value; 
@@ -284,20 +282,18 @@
             type: "POST", 
             dataType: 'json',
 
-            success: function(response)
-            {
+            success: response => {
                 console.log('this works!');
             },
-            error: function(response)
-            {
+            error: response => {
                 console.log('this doesnt work!');
             }
         });
     });
 
-    // $('#course-form').submit(function(e) {
+    // document.getElementById('course-form').onsubmit = event => {
         
-    //     e.preventDefault();
+    //     event.preventDefault();
 
     //     var selected_course = $("#selected-cousre").val();
     //     var course_options = $('#courseOptions').val();
@@ -358,12 +354,12 @@
     //     });
     // });
 
-    $('#assessment-form').submit(function(e) {
+    document,.getElementById('assessment-form').onsubmit = event => {
+        // event.preventDefault();
+    }
 
-    });
-
-    $('#question-form').submit(function(e) {
-
-    });
+    document.getElementById('question-form').onsubmit = event => {
+        // event.preventDefault();
+    }
 </script>
 @stop

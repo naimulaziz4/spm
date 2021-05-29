@@ -16,16 +16,11 @@ class StudentsController extends Controller
      */
 
     public function retrieve()
-    {
-        $scores = DB::table('score')->select('studentID', 'marks_attained')->get(); 
-        $assessments = DB::table('assessment')->select('assessmentID', 'exam_type')->distinct()->get();
+    {   
+        $students = DB::table('student')->select('studentID')->get(); 
+        $assessments = DB::table('assessment')->select('exam_type')->distinct()->get();
 
-        return view('pages.scores')->with(compact('scores', 'assessments'));
-
-        // $courseID = "CSE303";
-        // $studentID = 1414732;
-        // $questionID = 1; 
-        // $assessmentID = 4;
+        return view('pages.scores')->with(compact('students', 'assessments'));
 
         // $courses = DB::table('coutcome')
         //     ->where('coutcome.coutcomeID', '111')
@@ -47,42 +42,81 @@ class StudentsController extends Controller
         // dd($coutcomes);
         // $coutcome = DB::table('coutcome')->whereRaw('coutcomeID % 10 = syllabus.syllabusID')->where('syllabus.courseID', $courseID)->select('coutcomeID')->get();
         // $question = DB::table('question')->all();
-        
     }
-    
+
     public function feed(Request $request)
     {
         $student = $request->student; 
         $exam_type = $request->assessment; 
-        
-        if($request->indicator)
+
+        if($request->topple)
         {
-            $dataset = DB::select(
-                DB::raw("SELECT exam_type, SC.questionID % 10 AS question_num, 
-                ROUND(marks_attained / marks_attainable * 100, 2) AS score_percentage 
-                FROM score AS SC, question AS Q, assessment AS A 
-                WHERE SC.questionID = Q.questionID AND FLOOR(Q.questionID / 10) = A.assessmentID AND studentID = '$student'
-                GROUP BY exam_type, SC.questionID;"));
+            if($request->indicator)
+            {
+                //Avg Score for each Student
+                $dataset = DB::select
+                (
+                    DB::raw("SELECT questionID, marks_attained from score as SC, assessment as A 
+                    where floor(SC.questionID / 10) = A.assessmentID and exam_type = '$exam_type' and studentID = '$student'")
+                );
+            }
+            else
+            {
+                //Outcome Rates for each Student
+                $dataset = DB::select
+                (
+                    DB::raw("SELECT Q.coutcomeID as coutcomeID,   
+                    SUM(marks_attained) / SUM(marks_attainable) * 100 AS coutcome_coverage,
+                    IF(SUM(marks_attained) / SUM(marks_attainable) * 100 > 40, 0, 1) AS achievement_status 
+                    FROM score AS SC, coutcome AS CO, question AS Q 
+                    WHERE SC.questionID = Q.questionID AND Q.coutcomeID = CO.coutcomeID and studentID = '$student'
+                    GROUP BY  Q.coutcomeID;")
+                );
+            }
         }
         else
-            $dataset = DB::select(DB::raw("SELECT questionID, marks_attained from score as SC, assessment as A 
-            where floor(SC.questionID / 10) = A.assessmentID and exam_type = '$exam_type' and studentID = '$student'"));
+        {
+            if($request->indicator)
+            {
+                //Course Average Score Overview 
+                $dataset = DB::select
+                (
+                    DB::raw("SELECT A.exam_type, Q.questionID % 10 AS question_num, AVG(marks_attained)
+                    FROM score AS SC, question AS Q, assessment AS A 
+                    WHERE SC.questionID = Q.questionID AND A.assessmentID = floor(Q.questionID / 10) AND LOCATE('CSE303', A.sectionID)
+                    GROUP BY A.exam_type, Q.questionID;")
+                );
+            }
+            else
+            {
+                //Course Outcome Rates
+                $dataset = DB::select
+                (
+                    DB::raw("SELECT Q.coutcomeID % 10 as CO_num,  
+                    SUM(marks_attained) / SUM(marks_attainable) * 100 AS coutcome_coverage
+                    FROM score AS SC, coutcome AS CO, question AS Q 
+                    WHERE SC.questionID = Q.questionID AND Q.coutcomeID = CO.coutcomeID  
+                    GROUP BY Q.coutcomeID;")
+                );
+            }
+        }            
+        // $dataset = DB::table('score')->where('studentID', $student)->select('questionID', 'marks_attained')->get()->max('marks_attainable'); 
         
-        // $dataset = DB::table('score')->where('studentID', $student)->select('questionID', 'marks_attained')->get(); 
-        //->max('marks_attainable'); 
-
         $maximum = DB::select(DB::raw("SELECT MAX(marks_attainable) as maximum from question as Q, assessment as A where A.assessmentID = floor(Q.questionID / 10) and exam_type = '$exam_type'"));
         // $maximum = DB::table('question')
-        //     ->join('assessment', DB::raw("floor(question.questionID / 10")), '=', 'assessmentID')
+        //     ->join('assessment', DB::raw("floor(question.questionID / 10"), '=', 'assessment.assessmentID')
         //     ->where('exam_type', $exam_type)
         //     ->max('marks_attainable');
+
         return response()->json([$dataset, $maximum]);
     }
 
     public function index()
     {   
         $course = DB::table('course')->select('courseID', 'course_title')->get();
+
         $section = DB::table('section')->select('sectionID', 'num_of_exams', 'enrolled')->get();
+
         $exam_type = DB::table('assessment')->select('assessmentID', 'exam_type')->distinct()->get();
         
         return view('pages.marksheet')->with(compact('course', 'section', 'exam_type'));

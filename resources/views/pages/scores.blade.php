@@ -1,12 +1,9 @@
 @extends('layouts.default')
 @section('content')
 <div class = "jumbotron">
-    <h3>Score Tracker</h3>
-    <br>
-    <br>
-    <br>
+    <h3 id = "component-heading">Score Tracker</h3>
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading" style = "font-family: Comic Sans; font-size: 25px; margin-left: 5px;"></div>
                 <div class="panel-body" id = "parent-canvas">
@@ -15,7 +12,6 @@
             </div>
         </div>
     </div>
-    <br>
     <form action="" id = "score-form">
         <div class = "row">
             <div class = "col-md-6">
@@ -23,10 +19,10 @@
                     <div class = "col-md-12">
                         <label for="student-list" class="form-label">Student</label>
                         <div class = "input-group mb-3">
-                            <input class="form-control" list="student-options" id="selected-student" placeholder="Search studentID... ">
+                            <input autofocus class="form-control" list="student-options" id="selected-student" placeholder="Search studentID... ">
                             <datalist id="student-options">
-                                @foreach($scores as $item)
-                                    <option value="{{ $item->studentID }}">
+                                @foreach($students as $item)
+                                    <option value="{{ $item->studentID }}">{{ $item->studentID }}</option>
                                 @endforeach
                             </datalist>
                         </div>
@@ -49,86 +45,133 @@
         </div>
         <div class = "input-group mb-3">
             <div class="form-check form-switch">
-                <input class="form-check-input form-control" type="checkbox" id="percentage-enabler" disabled>
-                <label class="form-check-label" for="percentage-enabler" id = "enabler-text">Output Toggle</label>
+                <input class="form-check-input form-control" type="checkbox" id="output-enabler" onclick="outputEnable()" disabled>
+                <label class="form-check-label" for="output-enabler" id="enabler-text">Output Toggle</label>
             </div> 
         </div>
-        <br>
         <div>
-            <button type="submit" class="btn btn-score text-center" id = "score-button" disabled = "true">Submit</button>
+            <button type="submit" class="btn btn-score text-center" onclick = "generate(2)" id = "score-button" disabled = "true">Submit</button>
         </div>  
     </form>
 </div>
 <br>
-<br>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
 <script type = "text/javascript">
-    document.getElementById('selected-student').addEventListener('change', function(event){
-        event.preventDefault();
-        
-        document.getElementById('score-button').disabled = false; 
-        document.getElementById('percentage-enabler').disabled = false; 
-        document.getElementById('assessment').disabled = false; 
-    });
-
-    document.getElementById('score-button').addEventListener('click', function(event){
-        event.preventDefault();
-        generate(document.getElementById('selected-student').value, document.getElementById('assessment').value, 0);
-    });
-
-    document.getElementById('percentage-enabler').addEventListener('change', function(event){
-        event.preventDefault();  
-        document.getElementById('enabler-text').innerHTML = document.getElementById('percentage-enabler').checked ? "Percentage": "Score";
-        if(!document.getElementById('percentage-enabler').disabled)
-            console.log('Is this working?');
-    });
-
-    function distribute(indicator)
-    {   
-        
-        generate(document.getElementById('selected-student').value, document.getElementById('assessment').value, );
+    window.onload = function () 
+    {
+        // document.getElementById('component-heading').innerHTML = "Onload in Progress"; 
+        generate(0);
     }
 
-    function generate(argument, parameter, indicator)
-    {
-        clearChart(); 
-        console.log(argument);
-        console.log(parameter);
-        console.log("Indicator: " + indicator);
+    //Primary Event: StudentID Selection
+    document.getElementById('selected-student').addEventListener('change', event => {
+        event.preventDefault();
+        //Enable Select Tag for Assessment
+        document.getElementById('assessment').disabled = false; 
+        //Enable Toggle Check for Retrieval of Outcomes:Scores
+        document.getElementById('output-enabler').disabled = false; 
+        outputEnable();
+        //Enable Ajax Request Button
+        document.getElementById('score-button').disabled = false; 
+    });
 
+    //Secondary Event: Retrieve Information
+    function outputEnable() 
+    {
+        if(document.getElementById('output-enabler').checked)
+        {
+            document.getElementById('enabler-text').innerHTML = "Outcome";
+            document.getElementById('assessment').value = "All Assessments";
+            document.getElementById('assessment').disabled = true; 
+            generate(1);
+        }
+        else
+        {
+            document.getElementById('assessment').disabled = false; 
+            document.getElementById('enabler-text').innerHTML = "Score";
+        }   
+    }
+
+    //Final Event: Generate Graph
+    function generate(topple)
+    {
+        if(topple - 1)
+            event.preventDefault();
+        
+        clearChart(); 
+
+        var options = document.getElementById('selected-student');
+
+        student = document.getElementById('selected-student').value; 
+        assessment = document.getElementById('assessment').value; 
+        indicator = (document.getElementById('output-enabler').checked ? 0: 1);
+
+        console.log(student);
+        console.log(assessment);
+        console.log(indicator);
+        console.log(topple);
+        
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
         });
+
         $.ajax({
             url: "{{ url('/scores') }}", 
             type: "POST", 
-
+        
             dataType: "json", 
             data: {
-                student:argument, 
-                assessment:parameter, 
-                indicator: indicator
+                student:student, 
+                assessment:assessment, 
+                indicator:indicator, 
+                topple: topple
             }, 
-            success: function(response)
-            {
+            success: response => {
                 console.log(response);
         
-                var abscissa = [];
-                var ordinate = [];
-                var maximum = response[1][0]["maximum"];
-                for(var i = 0; i < response[0].length; i++)
+                var xvalues = [];
+                var yvalues = [];
+                var abscissa = (indicator ? "questionID" : "coutcomeID");
+                var ordinate = (indicator ? "marks_attained" : "coutcome_coverage");
+                var maximum = (indicator ? response[1][0]["maximum"] : 100);
+
+                console.log(abscissa);
+                console.log(ordinate); 
+
+                if(topple)
                 {
-                    console.log(response[0][i]);
-                    abscissa.push('Q'+ (response[0][i]["questionID"] % 10));
-                    ordinate.push(response[0][i]["marks_attained"]);
+                    for(var i = 0; i < response[0].length; i++)
+                    {
+                        console.log(response[0][i]);
+                        if(assessment == "project")
+                            xvalues.push(response[0][1][]abscissa)
+                            xvalues.push((indicator ? "Q": "CO") + (response[0][i][abscissa] % 10));
+                        yvalues.push(response[0][i][ordinate]);
+                    }
                 }
+                else
+                {
+                    var exam_score = [];
+
+                    for(var i = 0; i < response[0].length; i++)
+                    {
+                        switch(response[0]["exam_type"])
+                        {
+                            
+                        }
+                        console.log("whatever");
+                    }
+                }
+
                 var barChartData = {
-                    labels: abscissa,
+                    labels: (assessment == "Project" ? "p" : xvalues),
                     datasets: [{
-                        label: "Distribution",
-                        data: ordinate, 
+                        label: indicator ? "Score" : "Achievement Rate",
+                        data: yvalues, 
                         backgroundColor: 
                         [
                             'rgba(255,99,132,1)',
@@ -161,26 +204,27 @@
                         ]    
                     }]
                 };
-                console.log(response);
                 console.log("The maximum for the exam is " + maximum);
-                showChart(barChartData, "Question", "Individual Score", maximum);
+                showChart(barChartData, indicator ? "Question" : "Course Outcome", indicator ? "Individual Score" : "Achievement Rate", maximum, student, assessment);
             }, 
-            error: function(response)
-            {
+            error: response => {
                 console.log("this doesn't work!");
             }
         });
     }
-    
-    function showChart(new_data, x_title, y_title, maximum) 
+    //Internal Event: Display Chart on HTML Canvas
+    function showChart(new_data, x_title, y_title, maximum, title_param, title_paramToo) 
     {
         var ctx = document.getElementById("canvas").getContext("2d");
         var barChart = new Chart(ctx, {
             type: 'bar',
             data: new_data,
-            options: {
-                elements: {
-                    rectangle: {
+            options: 
+            {
+                elements: 
+                {
+                    rectangle: 
+                    {
                         borderWidth: 2,
                         borderColor: "black",
                         borderSkipped: 'bottom'
@@ -190,39 +234,50 @@
                 {
                     display: false
                 },
-                scales: {
-                    xAxes: [{
+                scales: 
+                {
+                    xAxes: 
+                    [{
                         scaleLabel: {
                             display: true, 
                             labelString: x_title
                         }
                     }],
-                    yAxes: [{
-                        ticks: {
+                    yAxes: 
+                    [{
+                        ticks: 
+                        {
                             max: maximum, 
                             min: 0
                         },
-                        scaleLabel : {
+                        scaleLabel : 
+                        {
                             display: true, 
                             labelString: y_title
                         }
                     }],
                     display: true, 
-                    ticks: {
+                    ticks: 
+                    {
                         beginAtZero:true
                     }
+                },
+                title: 
+                {
+                    display: true,
+                    text: "CSE303 " + (indicator ? title_paramToo + " Score Distribution": "Course Outcome Achievement Rates") + " for " + title_param, 
+                    padding: 10,
+                    position: 'top',
+                    fontSize: 20
                 }
             },
-            responsive: true,
-            title: {
-                display: false,
-                text: "Distribution"             
-            }
+            responsive: true
         });
     }
+
+    //External Event: Clear Chart on HTML Canvas
     function clearChart() 
     {
-        event.preventDefault();
         var parent = document.getElementById('parent-canvas');
         var child = document.getElementById('canvas');          
         parent.removeChild(child);            
@@ -231,3 +286,6 @@
     }
 </script>
 @stop
+
+{{-- Generate Random Color on Background-color property for chart labels --}}
+{{-- var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); --}}

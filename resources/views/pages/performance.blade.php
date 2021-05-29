@@ -56,7 +56,7 @@
 <br>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script type = "text/javascript">
-    document.getElementById('section').addEventListener('change', function(event){
+    document.getElementById('section').onchange = event => {
         event.preventDefault();
         
         document.getElementById('score-button').disabled = false; 
@@ -65,12 +65,12 @@
         distribute(); 
     });
 
-    document.getElementById('outcome-enabler').addEventListener('change', function(event){
+    document.getElementById('outcome-enabler').onchange = event => {
         event.preventDefault();  
         distribute(); 
     });
 
-    document.getElementById('assessment').addEventListener('change', function(event){
+    document.getElementById('assessment').onchange = event => {
         event.preventDefault();
 
         document.getElementById('question').disabled = false; 
@@ -81,7 +81,7 @@
         document.getElementById('enabler-text').innerHTML = document.getElementById('outcome-grade-enabler').checked ? "Grade Distribution": "Outcome Distribution";
     }
 
-    document.getElementById('score-button').addEventListener('click', function(event){
+    document.getElementById('score-button').onclick = event => {
         event.preventDefault();
 
         var section = document.getElementById('section').value; 
@@ -107,8 +107,7 @@
                 assessment:assessment, 
                 question:question 
             }, 
-            success: function(response)
-            {
+            success: response => {
                 console.log(response);
                 // for (var i = 0 ; i < response.length ; i++) {
                 //     person.push(result[i]["name"]);
@@ -119,8 +118,7 @@
                 // setData(response['questionID'], response['marks_attainable'], document.getElementById('enabler-text').value.substr(0, 5));
                 showChart();
             }, 
-            error: function(response)
-            {
+            error: response => {
                 console.log("this doesn't work!");
             }
         });

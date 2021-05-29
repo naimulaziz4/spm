@@ -31,10 +31,8 @@ Route::get('about', function() {
 
 
 
-
 Auth::routes();
 Route::get('/login', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 
 
 
@@ -50,16 +48,9 @@ Route::post('/performance', [ScoresController::class, 'feed']);
 
 
 
-
-
-
-
 //Front page for Enrollment Studies
 Route::get('/enrollment', [EnrollmentController::class, 'index']);
 Route::post('/enrollment', [EnrollmentController::class, 'index']);
-
-
-
 
 //Front page for Marksheet Manager Running ... Insertion Based Concern
 Route::get('/marksheet', [StudentsController::class, 'index']);

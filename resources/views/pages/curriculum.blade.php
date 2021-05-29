@@ -191,20 +191,20 @@
   </div>
   <script type = "text/javascript">
     //Select Tag Detector
-    document.getElementById('program-selected').addEventListener('change', function(event){
+    document.getElementById('program-selected').addEventListener('change', event => {
       event.preventDefault();
       console.log('Still Awaiting Functionality');
     });
 
     //Secondary Course-Search Engine Commences
-    document.getElementById('manual-course-search').addEventListener('submit', function(event){
+    document.getElementById('manual-course-search').addEventListener('submit', event => {
       event.preventDefault();
       searchCourse("CSE", document.getElementById('course-searched').value, 0);
     });
     //Secondary Course-Search Engine Terminates
 
     //Primary Course-Search Engine Commences 
-    document.getElementById('search-form').addEventListener('submit', function(event) {
+    document.getElementById('search-form').addEventListener('submit', event => {
         event.preventDefault();
         searchCourse(document.getElementById('program-selection').value, document.getElementById('course-search').value.toUpperCase(), 1);
     });
@@ -228,15 +228,14 @@
           type: "POST",
           dataType: 'json',
           
-          success: function (response)
-          {
+          success: response => {
             // Coutcome Tbody Appending...
             var index; 
             var text = '<tr scope = "row"> ';
             for(index = 0; index < response[0].length; index++)
                 text += ('<td>CO' + response[0][index]['co_id'] + '</td><td>' + response[0][index]['co_title'] + '</td><td>' + response[0][index]['co_description'] + '</td></tr>');
             
-            $('#coutcome-tbody').html(text);
+            document.getElementById('coutcome-tbody').innerHTML = text;
             // Coutcome Tbody Appended!
 
             // Outcome Thead Append...
@@ -245,7 +244,7 @@
                 thead_text += ('<th class = "align-top" scope = "col">CO' + index + '</th>');
             
             text += '</tr';
-            $('#outcome-thead').html(thead_text);
+            document.getElementById('outcome-thead').innerHTML = thead_text;
             // Outcome Thead Append!
 
             // Outcome Tbody Append...
@@ -266,7 +265,7 @@
               });
               tbody_text += '</tr>';
             }
-            $('#outcome-tbody').html(tbody_text);
+            document.getElementById('outcome-tbody').innerHTML = tbody_text;
             // Outcome Tbody Appended!
 
             // Table Titles Setting...
@@ -280,8 +279,7 @@
             }
             // Table Titles Set!
           },
-          error: function(response) 
-          {
+          error: response => {
             document.getElementById((search == 0 ? 'secondary-': '') + 'course-footnote').innerHTML = "The course you have entered does not exist. ";
             console.log("Error" + response);
           }
