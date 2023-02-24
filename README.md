@@ -1,3 +1,10 @@
+Student Performance Monitoring System:
+- Enrollment Information Subsystem
+- Gradesheet Marking System
+- Friendly & Attractive User Interface & MORE!
+
+Please review the PDF Report under the root folder of the repository for design and analysis
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
