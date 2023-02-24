@@ -3,7 +3,7 @@ Student Performance Monitoring System:
 - Gradesheet Marking System
 - Friendly & Attractive User Interface & MORE!
 
-Please feel free to view the PDF Report (Report.pdf) under the root folder of the project repository for design and analysis
+Please feel free to view PDF Report (Report.pdf) under root folder of project repository for design and analysis.
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
